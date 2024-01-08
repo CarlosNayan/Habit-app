@@ -2,15 +2,15 @@ import { ScrollView, Text, View } from "react-native";
 import { HabitDay, daySize } from "../components/HabitDay";
 import { Header } from "../components/Header";
 import { generateDates } from "../utils/generateDays";
+import { useNavigation } from "@react-navigation/native";
 
 export function Home() {
   const weekDays = ["D", "S", "T", "Q", "Q", "S", "S"];
-
   const days = generateDates();
-
   const datesFromTheBeginnning = 14 * 6;
-
   const daysAmountToFill = datesFromTheBeginnning - days.length;
+
+  const { navigate } = useNavigation();
 
   return (
     <View className="bg-background flex-1 px-8 pt-16">
@@ -34,7 +34,12 @@ export function Home() {
       >
         <View className="flex-row flex-wrap">
           {days.map((day, index) => (
-            <HabitDay key={day.toISOString()} />
+            <HabitDay
+              key={day.toISOString()}
+              onPress={() =>
+                navigate("SummaryDay", { date: day.toISOString() })
+              }
+            />
           ))}
           {daysAmountToFill > 0 &&
             Array.from({ length: daysAmountToFill }).map((_, i) => (
